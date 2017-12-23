@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>IPA摄影大赛作品上传页面</title>
+		<style type="text/css">
+			table {
+				border-collapse: collapse;
+			}
+			
+			td {
+				border: 1px solid gainsboro;
+				text-align: center;
+			}
+			
+			#title {
+				text-align: center;
+				margin-top: 10px;
+			}
+			
+			#toolbar {
+				height: auto;
+				border: none;
+			}
+			
+			/*#dropzone {
+				height: 100px;
+			}*/
+			
+			.button {
+				width: 80px;
+				height: 30px;
+				border-radius: 5px;
+				border: white 1px solid;
+				color: white;
+			}
+			
+			
+			#fileSelector {
+				background-color: deepskyblue;
+			}
+			
+			#fileSelector:hover {
+				background-color: white;
+				color: deepskyblue;
+				border: deepskyblue 1px solid;
+			}
+			
+			#sendFiles {
+				background-color: limegreen;
+			}
+			
+			#sendFiles:hover {
+				background-color: white;
+				color: limegreen;
+				border: limegreen 1px solid;
+			}
+			
+			#sendFiles:disabled {
+				background-color: lightgreen;
+				color: white;
+			}
+						
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.item {
+				margin: 10px 0px;
+			}
+			
+			.step {
+				margin: 0px 10px;
+			}
+			
+			.wrapper {
+				margin: 0px 20px;
+			}
+			
+			.div-input {
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="title">
+			<h3>IPA摄影大赛作品上传页面</h3>
+		</div>
+		<br />
+		<br />
+		<div class="step">
+			<p>Step 1 填写信息</p>
+		</div>
+		<br />
+		<div class="wrapper">
+			<form>
+				<div class="item">
+					<label>年级:</label>
+					<input type="radio" name="grade" class="radio-input" id="grade7" value="高一" /><label>高一</label>
+					<input type="radio" name="grade" class="radio-input" id="grade8" value="高二" /><label>高二</label>
+					<input type="radio" name="grade" class="radio-input" id="grade9" value="高三" /><label>高三</label>
+					<input type="radio" name="grade" class="radio-input" id="grade10" value="不在校内任教" /><label>不在校内任教</label>
+					<p>学生请选择所在年级；</p>
+					<p>教师请选择办公室所标年级；</p>
+					<p>不在校内任教的教师选择“不在校内任教”。</p>
+				</div>
+				<div class="item">
+					<label>班级:</label><input type="text" name="class" class="basic-input" id="className" value="" /><br/>
+					<p>学生请填写班级的数字，如01和10，[国际部的同学班级号前带上请带上字母，如IB01]；</p>
+					<p>教师请填写学科组或工作部门，例如:语文组 或:总务处；</p>
+					<p>不在校内任教的教师，该处请留空。</p>
+				</div>
+				<div class="item">
+					<label>姓名:</label><input type="text" name="class" class="basic-input" id="selfName" value="" /><br/>
+					<p>请填写名字，例如:张三</p>
+				</div>
+
+			</form>
+		</div>
+
+		<br />
+		<div class="step">
+			<p>Step 2 选择文件</p>
+		</div>
+		<br />
+		<div class="wrapper">
+			<span style="font-weight: bold; background-color: lightgoldenrodyellow;">请将文件名改为作品名称！</span><br />
+			<span style="font-weight: bold; background-color: lightgoldenrodyellow;">请将文件名改为作品名称！</span><br />
+			<span style="font-weight: bold; background-color: lightgoldenrodyellow;">请将文件名改为作品名称！</span><br /><br />
+			<p>请点击下方按钮选择图片，如果错选，请点击右侧按钮删除；</p>
+			<p>上传结果参见上传进度一栏。</p>
+		</div>
+		<br />
+		<!--<div id="dropzone">拖拽图片到此处</div>-->
+		<div id="toolbar">
+			<div class="wrapper" style="margin-bottom: 5px;">
+				<input type="button" id="fileSelector" class="button" value="选择图片" />
+			</div>
+			<table id="information">
+				<tr>
+					<td width="40px">序号</td>
+					<td width="400px">文件名</td>
+					<td width="600px">预览图</td>
+					<td width="300px">上传进度</td>
+					<td width="93px">操作</td>
+				</tr>
+			</table>
+			<input type="file" multiple="multiple" accept="image/*" id="fileChooser" style="display: none;" />
+		</div>
+		<br />
+		<br />
+		<div class="step">
+			<p>Step 3 上传图片</p>
+		</div>
+		<br />
+		<div class="wrapper">
+			<div class="item">
+				<p>请点击下方按钮开始上传图片，上传过程中请勿进行其他操作</p>
+				<span style="font-weight: bold; background-color: lightgoldenrodyellow;">注意:该上传按钮只能点击一次，请确保选择正确再上传！</span>
+			</div>
+			<div class="item">
+				<input type="button" id="sendFiles" class="button" value="点击上传" />
+			</div>
+		</div>
+		<br />
+		<div class="step">
+			<p>最后，再次感谢您的积极参与！</p>
+		</div>
+		<script type="text/javascript">
+			function checkhHtml5() {
+				if(typeof(Worker) == "undefined") {
+					alert("您的浏览器版本过旧，请升级");
+				}
+			}
+			checkhHtml5();
+
+			var uploadList = new Array;
+			var leftNum = 0;
+			var add = "";
+
+			function main() {
+				/*
+				//拖拽选择
+				var dropzone = document.getElementById("dropzone");
+				dropzone.addEventListener("dragenter", function(event) {
+					event.stopPropagation();
+					event.preventDefault();
+				}, false);
+				// 拖拽在目标对象上时触发
+				dropzone.addEventListener("dragover", function(event) {
+					event.stopPropagation();
+					event.preventDefault();
+				}, false);
+				// 拖拽结束时触发
+				dropzone.addEventListener("drop", function(event) {
+					event.stopPropagation();
+					event.preventDefault();
+					var dt = event.dataTransfer;
+					var files = dt.files;
+					for(var b = 0; b < files.length; b++) {
+						handleFiles(files[b]);
+						uploadList.push(files[b]);
+					}
+				}, false);
+				*/
+				//按钮选择
+				var fileChooser = document.getElementById("fileChooser");
+				var fileSelector = document.getElementById("fileSelector");
+
+				fileSelector.addEventListener("click", function(event) {
+					if(fileChooser) {
+						fileChooser.click();
+					} else {
+						alert("出现未知错误");
+					}
+					event.preventDefault();
+				}, false);
+				fileChooser.addEventListener("change", function(event) {
+					event.stopPropagation();
+					event.preventDefault();
+					var fileList = fileChooser.files;
+					for(var c = 0; c < fileList.length; c++) {
+						handleFiles(fileList[c]);
+						uploadList.push(fileList[c]);
+					}
+
+/*				console.log("队列状态");
+					for(var x = 0; x < uploadList.length; x++) {
+						console.log(uploadList[x].name);
+					}*/
+				}, false);
+
+				//在点击上传后执行上传任务
+				var sendFilesBtn = document.getElementById("sendFiles");
+				sendFilesBtn.onclick = (function(event) {
+					var className = document.getElementById("className").value;
+					var selfName = document.getElementById("selfName").value;
+					var radioE = document.getElementsByName("grade");
+					var grade = "";
+					for (var g = 0; g<=3; g++) {
+						if (radioE[g].checked == true) {
+							grade = radioE[g].value;
+						}
+					}
+					if(grade == "") {
+						alert("请填写年级");
+						return false;
+					} else if((className == "") && (grade != "不在校内任教")) {
+						alert("请填写班级/学科组");
+						return false;
+					}else if(selfName == "") {
+						alert("请填写姓名");
+						return false;
+					} else {
+						if (grade == "不在校内任教") {
+							add = "校外" + " " + selfName;
+						} else {
+							var numberType = /^[0-9]*$/;
+							if (numberType.test(className)) {
+								add = grade + "(" + className + ")班" + " " + selfName;
+							} else {
+								add = grade +  className + " " + selfName;
+							}
+						}
+//						console.log(add);
+					}
+
+					if(uploadList.length == 0) {
+						alert("请添加要上传的图片");
+					} else {
+						this.setAttribute("disabled", "disabled");
+						this.style.borderColor = "white";
+						for(var m = 0; m < uploadList.length; m++) {
+							uploadFile(uploadList[m], m.toString() + "container");
+						}
+					}
+				});
+
+				function handleFiles(singleFile) {
+					var file = singleFile;
+					var imageType = /^image\//;
+
+					if(imageType.test(file.type)) {
+						var img = document.createElement("img");
+						img.classList.add("picture");
+						img.file = file;
+						img.setAttribute("width", "400px");
+						var num = document.createElement("p");
+						num.innerHTML = (leftNum + 1).toString();
+						var name = document.createElement("p");
+						name.classList.add("name");
+						name.innerHTML = file.name;
+						name.setAttribute("id", leftNum.toString() + "name");
+						var container = document.createElement("div");
+						var coloredBar = document.createElement("span");
+						var process = document.createElement("span");
+						var deleteImg = document.createElement("input");
+
+						var trElem = document.createElement("tr");
+						trElem.setAttribute("id", leftNum.toString());
+						var table = document.getElementById("information");
+						table.appendChild(trElem);
+						var trG = document.getElementById(leftNum.toString());
+						var tdNum = document.createElement("td");
+						tdNum.setAttribute("id", leftNum.toString() + "num");
+						var tdName = document.createElement("td");
+						var tdPi = document.createElement("td");
+						var tdPr = document.createElement("td");
+						var tdC = document.createElement("td");
+
+						function setIdAndAppend(type, discribe, addition) {
+							trG.appendChild(type);
+							type.setAttribute("id", leftNum.toString() + discribe);
+							var tdElem = document.getElementById(leftNum.toString() + discribe);
+							if(addition == deleteImg) {
+								addition.setAttribute("id", leftNum.toString() + "deleteBtn");
+								addition.setAttribute("type", "button");
+								addition.setAttribute("value", "删除");
+								addition.onclick = (function(event) {
+									var presentOrder = this.getAttribute("id"); //this关键字是个好东西
+									var newPresentOrder = parseInt(presentOrder);
+									table.removeChild(trG);
+									for(var l = 0; l < leftNum; l++) {
+										if(l <= newPresentOrder) {
+											continue;
+										}
+
+										var newTrG = document.getElementById(l.toString());
+										newTrG.setAttribute("id", (l - 1).toString());
+
+										function changeIdAndName(l, type) {
+											var newE = document.getElementById(l.toString() + type);
+											newE.setAttribute("id", (l - 1).toString() + type);
+											if(type == "figure") {
+												newE.innerHTML = l.toString();
+											}
+										}
+										changeIdAndName(l, "num");
+										changeIdAndName(l, "figure");
+										changeIdAndName(l, "namespace");
+										changeIdAndName(l, "name");
+										changeIdAndName(l, "picture");
+										changeIdAndName(l, "progress");
+										changeIdAndName(l, "container");
+										changeIdAndName(l, "coloredBar");
+										changeIdAndName(l, "process");
+										changeIdAndName(l, "control");
+										changeIdAndName(l, "deleteBtn");
+
+//										console.log("新的行:");
+//										console.log(newTrG);
+									}
+									leftNum = leftNum - 1;
+//									console.log("剩余个数:" + leftNum);
+									uploadList.splice(newPresentOrder, 1);
+/*									console.log("队列状态");
+									for(var x = 0; x < uploadList.length; x++) {
+										console.log(uploadList[x].name);
+									}*/
+								})
+
+							}
+							if(addition == num) {
+								addition.setAttribute("id", leftNum.toString() + "figure");
+							}
+							if(addition == container) {
+								addition.setAttribute("id", leftNum.toString() + "container");
+								addition.style.width = "250px";
+								addition.style.height = "auto";
+								addition.style.border = "none";
+								addition.style.margin = "auto";
+								coloredBar.setAttribute("id", leftNum.toString() + "coloredBar");
+								coloredBar.style.backgroundColor = "lightgreen";
+								coloredBar.style.border = "none";
+								coloredBar.style.width = "0px";
+								coloredBar.style.height = "20px";
+								coloredBar.style.display = "-moz-inline-box";
+								coloredBar.style.display = "-webkit-inline-box";
+								coloredBar.style.display = "-ms-inline-flexbox";
+								coloredBar.style.display = "inline-block";
+								process.setAttribute("id", leftNum.toString() + "process");
+								process.textContent = "0%";
+								process.style.color = "black";
+								process.style.float = "left";
+								process.style.width = "40px";
+								addition.appendChild(process);
+								addition.appendChild(coloredBar);
+							}
+							tdElem.appendChild(addition);
+						}
+
+						setIdAndAppend(tdNum, "num", num);
+						setIdAndAppend(tdName, "namespace", name);
+						setIdAndAppend(tdPi, "picture", img);
+						setIdAndAppend(tdPr, "progress", container);
+						setIdAndAppend(tdC, "control", deleteImg);
+
+						var reader = new FileReader();
+
+						function src(aImg) {
+							return function(e) {
+								aImg.src = e.target.result;
+							}
+						}
+						reader.onload = src(img);
+
+						reader.readAsDataURL(file);
+						leftNum = leftNum + 1;
+					} else {
+						var message = "您所选择的名为“" + file.name + "”的文件不是图片，请检查";
+						alert(message);
+					}
+				}
+
+				function uploadFile(file, containerId) {
+					var xhr = new XMLHttpRequest();
+					var fd = new FormData();
+					var upload = xhr.upload;
+					var progressBar = document.getElementById(containerId);
+					upload.progressbar = progressBar;
+					// 设置上传文件相关的事件处理函数
+					upload.addEventListener("progress", uploadProgress, false);
+					upload.addEventListener("load", uploadSucceed, false);
+					upload.addEventListener("error", uploadError, false);
+					// 上传文件
+					xhr.open("POST", "upload.php");
+					fd.append("myFile", file);
+					fd.append("myName", add)
+					xhr.send(fd);
+					xhr.onreadystatechange = (function(event) {
+						if(xhr.readyState == 4) {
+							var response = xhr.responseText;
+							var proresponse = JSON.parse(response);
+							if (proresponse.result == "1") {
+								progressBar.firstChild.textContent = "成功";
+								console.log("上传成功！");
+							} else {
+								progressBar.firstChild.textContent = "失败";
+								progressBar.lastChild.style.backgroundColor = "lightcoral";
+								alert(proresponse.result);
+								console.log("上传失败!");
+							}
+						}
+					})
+
+					function uploadProgress(event) {
+						if(event.lengthComputable) {
+							// 将进度换算成百分比
+							var percentage = Math.round((event.loaded * 100) / event.total);
+							console.log("percentage:" + percentage);
+							if(percentage < 100) {
+								event.target.progressbar.lastChild.style.width = (percentage * 2) + "px";
+								event.target.progressbar.firstChild.textContent = percentage + "%";
+							}
+						}
+					}
+
+					function uploadSucceed(event) {
+						event.target.progressbar.lastChild.style.width = "200px";
+						event.target.progressbar.firstChild.style.color = "black";
+						event.target.progressbar.firstChild.textContent = "100%";
+					}
+
+					function uploadError(error) {
+						event.target.progressbar.lastChild.style.width = "200px";
+						event.target.progressbar.lastChild.style.backgroundColor = "lightcoral";
+						event.target.progressbar.firstChild.style.color = "black";
+						event.target.progressbar.firstChild.textContent = "错误";
+						alert("上传失败，发送失败");
+					}
+
+				}
+
+			}
+
+			window.onload = main();
+		</script>
+	</body>
+
+</html>
