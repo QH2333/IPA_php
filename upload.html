@@ -1,3 +1,9 @@
+<!--
+	©Copyright IPA 2006-2017 保留所有权利
+	版权所有，侵权必究!
+	作者：IPA社员 徐贝宁
+	时间：2017-12-23
+-->
 <!DOCTYPE html>
 <html>
 
@@ -23,7 +29,6 @@
 				height: auto;
 				border: none;
 			}
-			
 			/*#dropzone {
 				height: 100px;
 			}*/
@@ -35,7 +40,6 @@
 				border: white 1px solid;
 				color: white;
 			}
-			
 			
 			#fileSelector {
 				background-color: deepskyblue;
@@ -61,7 +65,7 @@
 				background-color: lightgreen;
 				color: white;
 			}
-						
+			
 			* {
 				padding: 0;
 				margin: 0;
@@ -172,7 +176,10 @@
 		<script type="text/javascript">
 			function checkhHtml5() {
 				if(typeof(Worker) == "undefined") {
-					alert("您的浏览器版本过旧，请升级");
+					alert("您的浏览器版本过旧，请升级后再来上传。点击确定将关闭该网页。");
+					window.opener = null;
+					window.open('', '_self');
+					window.close();
 				}
 			}
 			checkhHtml5();
@@ -227,10 +234,10 @@
 						uploadList.push(fileList[c]);
 					}
 
-/*				console.log("队列状态");
-					for(var x = 0; x < uploadList.length; x++) {
-						console.log(uploadList[x].name);
-					}*/
+					/*				console.log("队列状态");
+										for(var x = 0; x < uploadList.length; x++) {
+											console.log(uploadList[x].name);
+										}*/
 				}, false);
 
 				//在点击上传后执行上传任务
@@ -240,8 +247,8 @@
 					var selfName = document.getElementById("selfName").value;
 					var radioE = document.getElementsByName("grade");
 					var grade = "";
-					for (var g = 0; g<=3; g++) {
-						if (radioE[g].checked == true) {
+					for(var g = 0; g <= 3; g++) {
+						if(radioE[g].checked == true) {
 							grade = radioE[g].value;
 						}
 					}
@@ -251,21 +258,21 @@
 					} else if((className == "") && (grade != "不在校内任教")) {
 						alert("请填写班级/学科组");
 						return false;
-					}else if(selfName == "") {
+					} else if(selfName == "") {
 						alert("请填写姓名");
 						return false;
 					} else {
-						if (grade == "不在校内任教") {
+						if(grade == "不在校内任教") {
 							add = "校外" + " " + selfName;
 						} else {
 							var numberType = /^[0-9]*$/;
-							if (numberType.test(className)) {
+							if(numberType.test(className)) {
 								add = grade + "(" + className + ")班" + " " + selfName;
 							} else {
-								add = grade +  className + " " + selfName;
+								add = grade + className + " " + selfName;
 							}
 						}
-//						console.log(add);
+						//						console.log(add);
 					}
 
 					if(uploadList.length == 0) {
@@ -350,16 +357,16 @@
 										changeIdAndName(l, "control");
 										changeIdAndName(l, "deleteBtn");
 
-//										console.log("新的行:");
-//										console.log(newTrG);
+										//										console.log("新的行:");
+										//										console.log(newTrG);
 									}
 									leftNum = leftNum - 1;
-//									console.log("剩余个数:" + leftNum);
+									//									console.log("剩余个数:" + leftNum);
 									uploadList.splice(newPresentOrder, 1);
-/*									console.log("队列状态");
-									for(var x = 0; x < uploadList.length; x++) {
-										console.log(uploadList[x].name);
-									}*/
+									/*									console.log("队列状态");
+																		for(var x = 0; x < uploadList.length; x++) {
+																			console.log(uploadList[x].name);
+																		}*/
 								})
 
 							}
@@ -434,7 +441,7 @@
 						if(xhr.readyState == 4) {
 							var response = xhr.responseText;
 							var proresponse = JSON.parse(response);
-							if (proresponse.result == "1") {
+							if(proresponse.result == "1") {
 								progressBar.firstChild.textContent = "成功";
 								console.log("上传成功！");
 							} else {
